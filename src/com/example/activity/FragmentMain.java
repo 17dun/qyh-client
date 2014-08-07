@@ -37,15 +37,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.model.Person;
-import com.example.provider.ImageCircleView;
 import com.example.provider.JSONProvider;
+
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
+
 
 public class FragmentMain extends Fragment implements OnClickListener {
 	private TextView tv;
-	static String server_ip = "192.168.7.212";
+	static String server_ip = "192.168.1.103";
 	FirstAdapter adapter;
 	ListView listView;
-	TextView footView;
 	String strjson = "";
 
 	private final int TIME_UP = 1;
@@ -61,12 +64,6 @@ public class FragmentMain extends Fragment implements OnClickListener {
 																// 这个方法，一般在这里用getActivity()方法代理
 				adapter.setListView(listView);
 				listView.setAdapter(adapter);
-				footView = new TextView(getActivity());
-				footView.setText("加载更多");
-				footView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
-				footView.setGravity(Gravity.CENTER);
-				footView.setOnClickListener(FragmentMain.this);// 如果这里再写this就是指handler，这里需要指向MainActivity的this
-				listView.addFooterView(footView);
 				listView.setOnItemClickListener(new OnItemClickListener() {// 为listView的每个item创建点击事件
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1,
@@ -255,8 +252,6 @@ public class FragmentMain extends Fragment implements OnClickListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		ImageCircleView cir = new ImageCircleView();
-		bitmap=cir.circleDraw(bitmap);
 		return bitmap;
 	}
 
@@ -269,11 +264,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
 
 	@Override
 	public void onClick(View arg0) {
-		if (adapter.getCount() > 100) {// 写死了一个大于100条数据就不显示加载更多了
-			if (listView.getFooterViewsCount() > 0) {
-				listView.removeFooterView(footView);
-			}
-		} else {
+		
 			new Thread(new Runnable() {// 刚才那个错的意思是在主线程发起了网络请求，android4.0之后对网络访问做了限制，默认情况下网络访问不能放在主线程里，不然会报错
 						@Override
 						public void run() {
@@ -294,7 +285,6 @@ public class FragmentMain extends Fragment implements OnClickListener {
 							handler.sendMessage(msg);
 						}
 					}).start();
-		}
 	}
 
 	private List<Person> getDataByJson(String json) {// 根据json字符串组装list
