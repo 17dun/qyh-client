@@ -69,7 +69,6 @@ public class MainActivity extends FragmentActivity {
 						.hide(mFragments[2]);
 				switch (checkedId) {
 				case R.id.rbOne:
-					Log.i("my","ssss");
 					fragmentTransaction.show(mFragments[0]).commit();
 					break;
 

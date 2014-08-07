@@ -40,7 +40,7 @@ import com.example.provider.JSONProvider;
 
 public class FragmentMain extends Fragment implements OnClickListener {
 	private TextView tv;
-	static String server_ip = "192.168.1.103";
+	static String server_ip = "192.168.7.212";
 	FirstAdapter adapter;
 	ListView listView;
 	TextView footView;
@@ -165,14 +165,14 @@ public class FragmentMain extends Fragment implements OnClickListener {
 																		// ∏∏¿‡
 			}
 			TextView tv = (TextView) arg1.findViewById(R.id.tvName);
-			//TextView far = (TextView) arg1.findViewById(R.id.far);
-			//TextView work = (TextView) arg1.findViewById(R.id.work);
+			TextView far = (TextView) arg1.findViewById(R.id.far);
+			TextView work = (TextView) arg1.findViewById(R.id.work);
 			TextView score = (TextView) arg1.findViewById(R.id.tvScore);
 			ImageView ivHeader = (ImageView) arg1.findViewById(R.id.ivHeader);
 			Person p = getItem(arg0);
 			tv.setText(p.getName());
-			//far.setText(p.getFar());
-			//work.setText(p.getWork());
+			far.setText(p.getFar());
+			work.setText(p.getWork());
 			score.setText(p.getScore());
 			
 			String url = "http://"+ server_ip +":8080/images/" + p.getPic();

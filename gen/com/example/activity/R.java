@@ -77,7 +77,7 @@ public final class R {
         public static final int UserName=0x7f090013;
         public static final int addBut=0x7f090010;
         public static final int bottomRg=0x7f090003;
-        public static final int far=0x7f090027;
+        public static final int far=0x7f090025;
         public static final int find_group_but=0x7f090008;
         public static final int find_user_but=0x7f090009;
         public static final int fragement_main=0x7f090000;
@@ -90,8 +90,8 @@ public final class R {
         public static final int head_lastUpdatedTextView=0x7f09001d;
         public static final int head_progressBar=0x7f09001b;
         public static final int head_tipsTextView=0x7f09001c;
-        public static final int infoHead=0x7f09002a;
-        public static final int infoText=0x7f09002b;
+        public static final int infoHead=0x7f090028;
+        public static final int infoText=0x7f090029;
         public static final int ivHeader=0x7f090020;
         public static final int listView=0x7f090018;
         public static final int load_more=0x7f09001f;
@@ -101,16 +101,13 @@ public final class R {
         public static final int rbOne=0x7f090004;
         public static final int rbThree=0x7f090006;
         public static final int rbTwo=0x7f090005;
-        public static final int returnBtn=0x7f090029;
+        public static final int returnBtn=0x7f090027;
         public static final int textview=0x7f090017;
-        public static final int titleTv=0x7f090028;
-        public static final int tvAge=0x7f090023;
+        public static final int titleTv=0x7f090026;
         public static final int tvName=0x7f090021;
-        public static final int tvScore=0x7f090024;
-        public static final int tvSex=0x7f090022;
-        public static final int tvStyle=0x7f090026;
-        public static final int tvYear=0x7f090025;
-        public static final int work=0x7f09002c;
+        public static final int tvScore=0x7f090022;
+        public static final int tvStyle=0x7f090024;
+        public static final int work=0x7f090023;
     }
     public static final class layout {
         public static final int activity_main=0x7f030000;
