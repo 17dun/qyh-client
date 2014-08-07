@@ -22,7 +22,7 @@ public class UserInfoActivity extends Activity {
 		setContentView(R.layout.userinfo);
 		intent=this.getIntent();  
 		TextView textView = (TextView)findViewById(R.id.infoText);
-		TextView workView = (TextView)findViewById(R.id.work);
+		TextView workView = (TextView)findViewById(R.id.tvWork);
 		//ImageView picBox = (ImageView)findViewById(R.id.infoHead);
 		Button btn = (Button)findViewById(R.id.returnBtn);
 		btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);

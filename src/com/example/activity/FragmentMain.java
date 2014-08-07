@@ -36,6 +36,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.model.Person;
+import com.example.provider.ImageCircleView;
 import com.example.provider.JSONProvider;
 
 public class FragmentMain extends Fragment implements OnClickListener {
@@ -166,14 +168,18 @@ public class FragmentMain extends Fragment implements OnClickListener {
 			}
 			TextView tv = (TextView) arg1.findViewById(R.id.tvName);
 			TextView far = (TextView) arg1.findViewById(R.id.far);
-			TextView work = (TextView) arg1.findViewById(R.id.work);
+			TextView work = (TextView) arg1.findViewById(R.id.tvWork);
 			TextView score = (TextView) arg1.findViewById(R.id.tvScore);
 			ImageView ivHeader = (ImageView) arg1.findViewById(R.id.ivHeader);
+			ImageView ivSex = (ImageView) arg1.findViewById(R.id.ivSex);
 			Person p = getItem(arg0);
 			tv.setText(p.getName());
 			far.setText(p.getFar());
 			work.setText(p.getWork());
 			score.setText(p.getScore());
+			if(p.getSex()==0){
+				ivSex.setBackgroundResource(R.drawable.girl);
+			}
 			
 			String url = "http://"+ server_ip +":8080/images/" + p.getPic();
 			Log.i("url",url);
@@ -249,6 +255,8 @@ public class FragmentMain extends Fragment implements OnClickListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		ImageCircleView cir = new ImageCircleView();
+		bitmap=cir.circleDraw(bitmap);
 		return bitmap;
 	}
 
@@ -300,11 +308,12 @@ public class FragmentMain extends Fragment implements OnClickListener {
 				long id = jsonObject.getLong("id");
 				String name = jsonObject.getString("name");
 				int age = jsonObject.getInt("age");
+				int sex = jsonObject.getInt("sex");
 				String pic = jsonObject.getString("pic");
 				int work = jsonObject.getInt("work");
 				String style = jsonObject.getString("style");
 				//String score = jsonObject.getString("score");
-				Person person = new Person(id, name, age, pic,work,style);
+				Person person = new Person(id, name, age,sex, pic,work,style);
 				persons.add(person);
 			}
 		} catch (JSONException e) {
@@ -313,93 +322,6 @@ public class FragmentMain extends Fragment implements OnClickListener {
 		return persons;
 	}
 	
-	static class Person {// 创建对象封装数据
-		private long id;
-		private int age;
-		private String name;
-		private String pic;
-		private String far;
-		private int work;
-		private String style;
-		//private String score;
-		
 
-		public Person(long id, String name, int age, String pic,int work,String style) {
-			super();
-			this.id = id;
-			this.name = name;
-			this.age = age;
-			this.pic = pic;
-			this.work = work;
-			this.style = style;
-		}
-
-		
-		public String getScore() {
-			return "影响力：200";
-		}
-
-
-		public long getId() {
-			return id;
-		}
-
-		public void setId(long id) {
-			this.id = id;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public long getAge() {
-			return age;
-		}
-
-		public void setAge(int age) {
-			this.age = age;
-		}
-
-		public String getPic() {
-			return pic;
-		}
-
-		public void setPic(String pic) {
-			this.pic = pic;
-		}
-
-		public String getFar() {
-			return "100m";
-		}
-
-		public void setFar(String far) {
-			this.far = far;
-		}
-
-		public String getWork() {
-			String[]  workArray;
-			workArray = new String[6];
-			workArray[0] = "无业";
-			workArray[1] = "白领";
-			workArray[2] = "学生";
-			workArray[3] = "公务员";
-			workArray[4] = "运动员";
-			workArray[5] = "其它";
-			return workArray[work];
-		}
-
-		public String getStyle() {
-			return style;
-		}
-		
-		
-		public void setWork(int work) {
-			this.work = work;
-		}
-	}
 
 }

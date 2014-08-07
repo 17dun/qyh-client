@@ -50,17 +50,18 @@
                 android:layout_height="wrap_content" >
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/tag" />
+                    android:id="@+id/ivSex"
+                    android:layout_width="10dp"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/boy" />
 
                 <TextView
-                    android:id="@+id/work"
+                    android:id="@+id/tvWork"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:singleLine="true"
                     android:text="work"
                     android:textColor="#6e6e6e"
@@ -70,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="10dp"
                     android:singleLine="true"
                     android:text="tvStyle"
                     android:textColor="#6e6e6e"
@@ -89,11 +90,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="20dp"
                 android:textColor="#37b8ef"
                 android:textSize="12dp" 
-                    android:text="far"/>
+                android:text="far"/>
         </LinearLayout>
     </LinearLayout>
 
