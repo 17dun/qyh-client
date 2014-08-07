@@ -1,0 +1,70 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <!-- 上边主页面 -->
+    
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="10" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal" >
+
+            <fragment
+                android:id="@+id/fragement_main"
+                android:name="com.example.activity.FragmentMain"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+
+            <fragment
+                android:id="@+id/fragement_search"
+                android:name="com.example.activity.FragmentSearch"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+
+            <fragment
+                android:id="@+id/fragement_setting"
+                android:name="com.example.activity.FragmentSetting"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <!-- 底部菜单页面 -->
+
+    <RadioGroup
+        android:id="@+id/bottomRg"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:background="@drawable/tab_footer_bg"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/rbOne"
+            style="@style/rg_btn_style"
+            android:checked="true"
+            android:drawableTop="@drawable/rb_one_btn_selector"
+            android:text="首页" />
+
+        <RadioButton
+            android:id="@+id/rbTwo"
+            style="@style/rg_btn_style"
+            android:drawableTop="@drawable/rb_two_btn_selector"
+            android:text="搜索" />
+
+        <RadioButton
+            android:id="@+id/rbThree"
+            style="@style/rg_btn_style"
+            android:drawableTop="@drawable/rb_three_btn_selector"
+            android:text="设置" />
+    </RadioGroup>
+
+</LinearLayout>

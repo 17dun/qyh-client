@@ -1,0 +1,63 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:orientation="vertical"
+              android:layout_height="fill_parent"
+              android:background="#ffffff">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:checkedButton="@+id/main_radio_btn1"
+                android:orientation="horizontal" >
+
+            <ImageView
+                    android:id="@+id/find_group_but"
+                    android:layout_width="167dp"
+                    android:layout_height="36dp"
+                    android:button="@null"
+                    android:layout_gravity="center"
+                    android:checked="true"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@drawable/find_group_but"
+                    android:onClick="FindGroupClick" />
+
+            <ImageView
+                    android:id="@+id/find_user_but"
+                    android:layout_width="167dp"
+                    android:layout_height="36dp"
+                    android:button="@null"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:background="@drawable/find_user_but"
+                    android:onClick="FindUserClick"
+                    />
+
+        </RadioGroup>
+    </RelativeLayout>
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+        <fragment
+                android:id="@+id/fragment_FindUser"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                class="com.example.myFragmentAnimation.FindUserFragment" />
+        <fragment
+                android:id="@+id/fragment_FindGroup"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                class="com.example.myFragmentAnimation.FindGroupFragment" />
+
+
+
+
+
+    </RelativeLayout>
+</LinearLayout>
