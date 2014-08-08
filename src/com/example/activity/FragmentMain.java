@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,6 +53,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
 	FirstAdapter adapter;
 	PullToRefreshListView listView;
 	String strjson = "";
+	String lastRefreshDate =new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()); 
 
 	private final int TIME_UP = 1;
 	private final int TIME_UP2 = 2;
@@ -97,7 +99,8 @@ public class FragmentMain extends Fragment implements OnClickListener {
 		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
 			@Override
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-				String label = "加载中....";
+				String label = "上次更新时间:"+lastRefreshDate;
+				lastRefreshDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()); 
 				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
 				new GetDataTask().execute();
 			}
@@ -344,23 +347,21 @@ public class FragmentMain extends Fragment implements OnClickListener {
 		return persons;
 	}
 	
-	
-	
-	private class GetDataTask extends AsyncTask<Void, Void, List<Person>> {
+	private class GetDataTask extends AsyncTask<Void, Void, List<Person>> {//本身在子线程里面运行
 
 		//后台处理部分
 		@Override
 		protected List<Person> doInBackground(Void... params) {//你申明的参数类型是void，就是没参数，你想要啥样的参数·
 			// Simulates a background job.
 			
-					try {
-						strjson = JSONProvider.getJSONData("http://"+server_ip+":888/?method=getUserList");
-						Log.i("strjson", strjson);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+			try {
+				strjson = JSONProvider.getJSONData("http://"+server_ip+":888/?method=getUserList");
+				Log.i("strjson", strjson);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 
-					List<Person> dataPerson = getDataByJson(strjson);
+			List<Person> dataPerson = getDataByJson(strjson);
 			return dataPerson;
 		}
 
@@ -369,8 +370,9 @@ public class FragmentMain extends Fragment implements OnClickListener {
 		@Override
 		protected void onPostExecute(List<Person> result) {
 			//在头部增加新添内容
-			//通知程序数据集已经改变，如果不做通知，那么将不会刷新mListItems的集合
 			adapter.addHeadDate(result);
+			//通知程序数据集已经改变，如果不做通知，那么将不会刷新mListItems的集合
+			adapter.notifyDataSetChanged();  
 			// Call onRefreshComplete when the list has been refreshed.
 			listView.onRefreshComplete(); 
 			super.onPostExecute(result);
