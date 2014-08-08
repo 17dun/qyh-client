@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -47,7 +48,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 
 public class FragmentMain extends Fragment implements OnClickListener {
 	private TextView tv;
-	static String server_ip = "192.168.1.103";
+	static String server_ip = "192.168.7.212";
 	FirstAdapter adapter;
 	PullToRefreshListView listView;
 	String strjson = "";
@@ -98,7 +99,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
 			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 				String label = "加载中....";
 				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-				//new GetDataTask().execute();
+				new GetDataTask().execute();
 			}
 		});
 		
@@ -168,6 +169,22 @@ public class FragmentMain extends Fragment implements OnClickListener {
 
 		public void addData(List<Person> datas) {
 			dataList.addAll(datas);
+			notifyDataSetChanged();
+		}
+		public void addFirst(Person tx) {
+			List<Person> temp = new ArrayList<Person>();
+			temp.add(tx);
+			temp.addAll(dataList);
+			dataList.clear();
+			dataList.addAll(temp);
+			notifyDataSetChanged();
+		}
+		public void addHeadDate(List<Person> datas){
+			List<Person> temp = new ArrayList<Person>();
+			temp.addAll(datas);
+			temp.addAll(dataList);
+			dataList.clear();
+			dataList.addAll(temp);
 			notifyDataSetChanged();
 		}
 
@@ -329,33 +346,33 @@ public class FragmentMain extends Fragment implements OnClickListener {
 	
 	
 	
-	private class GetDataTask extends AsyncTask<Void, Void, String> {
+	private class GetDataTask extends AsyncTask<Void, Void, List<Person>> {
 
-		private List<Person> dataList;
 		//后台处理部分
 		@Override
-		protected String doInBackground(Void... params) {
+		protected List<Person> doInBackground(Void... params) {//你申明的参数类型是void，就是没参数，你想要啥样的参数·
 			// Simulates a background job.
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-			}
-			String str="Added after refresh...I add";
-			return str;
+			
+					try {
+						strjson = JSONProvider.getJSONData("http://"+server_ip+":888/?method=getUserList");
+						Log.i("strjson", strjson);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+
+					List<Person> dataPerson = getDataByJson(strjson);
+			return dataPerson;
 		}
 
 		//这里是对刷新的响应，可以利用addFirst（）和addLast()函数将新加的内容加到LISTView中
 		//根据AsyncTask的原理，onPostExecute里的result的值就是doInBackground()的返回值
 		@Override
-		protected void onPostExecute(String result) {
+		protected void onPostExecute(List<Person> result) {
 			//在头部增加新添内容
-			dataList.addFirst(result);
-			
 			//通知程序数据集已经改变，如果不做通知，那么将不会刷新mListItems的集合
-			adapter.notifyDataSetChanged();
+			adapter.addHeadDate(result);
 			// Call onRefreshComplete when the list has been refreshed.
-			listView.onRefreshComplete();
-
+			listView.onRefreshComplete(); 
 			super.onPostExecute(result);
 		}
 	}
