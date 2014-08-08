@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -48,7 +49,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
 	private TextView tv;
 	static String server_ip = "192.168.1.103";
 	FirstAdapter adapter;
-	ListView listView;
+	PullToRefreshListView listView;
 	String strjson = "";
 
 	private final int TIME_UP = 1;
@@ -62,9 +63,11 @@ public class FragmentMain extends Fragment implements OnClickListener {
 				adapter = new FirstAdapter(getActivity(), data);// Fragment
 																// 里没有getApplicationContext()
 																// 这个方法，一般在这里用getActivity()方法代理
-				adapter.setListView(listView);
-				listView.setAdapter(adapter);
-				listView.setOnItemClickListener(new OnItemClickListener() {// 为listView的每个item创建点击事件
+				ListView actualListView = listView.getRefreshableView();
+				
+				adapter.setListView(actualListView);
+				actualListView.setAdapter(adapter);
+				actualListView.setOnItemClickListener(new OnItemClickListener() {// 为listView的每个item创建点击事件
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1,
 							int arg2, long arg3) {
@@ -88,7 +91,19 @@ public class FragmentMain extends Fragment implements OnClickListener {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_main, container,false);
-		listView = (ListView) rootView.findViewById(R.id.listView);
+		listView = (PullToRefreshListView) rootView.findViewById(R.id.listView);
+		
+		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+			@Override
+			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+				String label = "加载中....";
+				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+				//new GetDataTask().execute();
+			}
+		});
+		
+		
+		
 		tv = (TextView) rootView.findViewById(R.id.titleTv);
 		tv.setText("找球友");
 		new Thread(new Runnable() {// 刚才那个错的意思是在主线程发起了网络请求，android4.0之后对网络访问做了限制，默认情况下网络访问不能放在主线程里，不然会报错
@@ -312,6 +327,38 @@ public class FragmentMain extends Fragment implements OnClickListener {
 		return persons;
 	}
 	
+	
+	
+	private class GetDataTask extends AsyncTask<Void, Void, String> {
+
+		private List<Person> dataList;
+		//后台处理部分
+		@Override
+		protected String doInBackground(Void... params) {
+			// Simulates a background job.
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+			}
+			String str="Added after refresh...I add";
+			return str;
+		}
+
+		//这里是对刷新的响应，可以利用addFirst（）和addLast()函数将新加的内容加到LISTView中
+		//根据AsyncTask的原理，onPostExecute里的result的值就是doInBackground()的返回值
+		@Override
+		protected void onPostExecute(String result) {
+			//在头部增加新添内容
+			dataList.addFirst(result);
+			
+			//通知程序数据集已经改变，如果不做通知，那么将不会刷新mListItems的集合
+			adapter.notifyDataSetChanged();
+			// Call onRefreshComplete when the list has been refreshed.
+			listView.onRefreshComplete();
+
+			super.onPostExecute(result);
+		}
+	}
 
 
 }

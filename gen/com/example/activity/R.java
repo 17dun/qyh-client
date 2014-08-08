@@ -249,7 +249,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int infoText=0x7f05003a;
         public static final int ivHeader=0x7f05002c;
         public static final int ivSex=0x7f05002f;
-        public static final int listView=0x7f050024;
+        public static final int listView=0x7f050023;
         public static final int load_more=0x7f05002b;
         public static final int main_radio_btn1=0x7f050013;
         public static final int manualOnly=0x7f050004;
@@ -268,7 +268,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int returnBtn=0x7f050038;
         public static final int rotate=0x7f050007;
         public static final int scrollview=0x7f05000b;
-        public static final int textview=0x7f050023;
+        public static final int textview=0x7f050024;
         public static final int titleTv=0x7f050037;
         public static final int tvName=0x7f05002d;
         public static final int tvScore=0x7f05002e;

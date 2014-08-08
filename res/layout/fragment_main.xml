@@ -7,6 +7,7 @@
     <include
         android:id="@+id/one_title"
         layout="@layout/title_bar" />
+    <!-- 
 	<ListView 
 	    android:layout_width="match_parent"
 	    android:divider="#b8b8b8"
@@ -14,5 +15,19 @@
 	    android:layout_height="match_parent"
 	    android:layout_below="@+id/textview"
 	    android:id="@+id/listView"
-	    /><!-- layout_below:排在上面TextView的下面，如果不写，会与上面重叠排列 -->
+	    />-->
+	      <com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/listView"
+        android:layout_width="fill_parent"
+        android:layout_below="@+id/textview"
+        android:layout_height="fill_parent"
+        android:cacheColorHint="#00000000"
+        android:divider="#19000000"
+        android:dividerHeight="4dp"
+        android:fadingEdge="none"
+        android:fastScrollEnabled="false"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:smoothScrollbar="true" />
+	    
 </LinearLayout>
