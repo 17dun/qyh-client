@@ -31,16 +31,17 @@ public class FragmentSetting extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		mMapView = new MapView(getActivity(), new BaiduMapOptions());
-		
-		mBaiduMap = mMapView.getMap();
-		return mMapView;
+		View arg1 = inflater.inflate(R.layout.listitem, null);
+//		mMapView = new MapView(getActivity(), new BaiduMapOptions());
+//		
+//		mBaiduMap = mMapView.getMap();
+		return arg1;
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		tv = (TextView) getView().findViewById(R.id.titleTv);
-		tv.setText("…Ë÷√");
+//		tv = (TextView) getView().findViewById(R.id.titleTv);
+//		tv.setText("…Ë÷√");
 	}
 }

@@ -14,12 +14,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -39,6 +42,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cach.BitmapCacheManager;
+import com.example.db.DBUtils;
 import com.example.model.Person;
 import com.example.provider.JSONProvider;
 
@@ -64,6 +69,25 @@ public class FragmentMain extends Fragment implements OnClickListener {
 				Log.i("i","1");
 				// handler里面的方法是运行在主线程的
 				List<Person> data = getDataByJson(strjson);
+				DBUtils dbUtils = new DBUtils(getActivity());
+				SQLiteDatabase db = dbUtils.getWritableDatabase();
+				for(Person p:data){
+//					db.execSQL("insert into");//這插入語句就跟之前你用的SqlServer一樣了//這個你自己寫吧
+////					db.execSQL(sql, bindArgs)  這種方式適合需要傳遞參數的時候用
+//					db.execSQL("insert into person(name,age,sex,work,far,pic,style) values(?,?,?,?,?)", new Object[]{p.getName(),p.getAge(),p.getSex(),p.getWork(),p.getFar(),p.getPic(),p.getStyle() });//你的persion類里都是字符串或者數字，由於sqlite是弱類型，即便數字，你也可以用string的參數傳禁區，不過如果你要求嚴格，就按類型傳，這裡可以用object數組
+				//android里提供了另外一种方式来插入数据
+					ContentValues cv = new ContentValues();
+					cv.put("name", p.getName());
+					cv.put("age", p.getAge());
+					cv.put("sex", p.getSex());
+					cv.put("work", p.getWork());
+					cv.put("far", p.getFar());
+					cv.put("pic", p.getPic());
+					cv.put("style", p.getStyle());
+					db.insert("person", null, cv);
+				
+				}
+				
 				adapter = new FirstAdapter(getActivity(), data);// Fragment
 																// 里没有getApplicationContext()
 																// 这个方法，一般在这里用getActivity()方法代理
@@ -139,6 +163,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
 		private Context context;
 		private List<Person> dataList;
 		private ListView listView;
+		BitmapCacheManager bmpManager;
 
 		public FirstAdapter(Context context, List<Person> dataList) {
 			this.context = context;
@@ -147,6 +172,10 @@ public class FragmentMain extends Fragment implements OnClickListener {
 
 		public void setListView(ListView listView) {
 			this.listView = listView;
+			//這個是我之前寫的一個網絡圖片緩存類，第一個參數，是內存緩存的大小，第二個，是默認圖片，第三個，是imageview所在的父佈局
+			//下面的setcachedir，是這是緩存到哪個文件夾
+			bmpManager = new BitmapCacheManager(800*1000, R.drawable.boy, listView);//這句是
+			bmpManager.setCacheDir(Environment.getExternalStorageDirectory().getAbsolutePath()+"/xiaoting/cache");
 		}
 
 		@Override
@@ -216,8 +245,9 @@ public class FragmentMain extends Fragment implements OnClickListener {
 			
 			String url = "http://"+ server_ip +":8080/images/" + p.getPic();
 			Log.i("url",url);
-			ivHeader.setTag(arg1 + url);
-			new DownloadBitmapTask(listView, arg1 + url).execute(url);
+//			ivHeader.setTag(arg1 + url);
+//			new DownloadBitmapTask(listView, arg1 + url).execute(url);
+			bmpManager.setViewImage(arg0+"", url, ivHeader);
 			return arg1;
 		}
 
