@@ -54,7 +54,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 
 public class FragmentMain extends Fragment implements OnClickListener {
 	private TextView tv;
-	static String server_ip = "192.168.1.103";
+	static String server_ip = "192.168.7.212";
 	FirstAdapter adapter;
 	PullToRefreshListView listView;
 	String strjson = "";
@@ -174,7 +174,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
 			this.listView = listView;
 			//這個是我之前寫的一個網絡圖片緩存類，第一個參數，是內存緩存的大小，第二個，是默認圖片，第三個，是imageview所在的父佈局
 			//下面的setcachedir，是這是緩存到哪個文件夾
-			bmpManager = new BitmapCacheManager(800*1000, R.drawable.boy, listView);//這句是
+			bmpManager = new BitmapCacheManager(800*1000, R.drawable.head2_img, listView);//這句是
 			bmpManager.setCacheDir(Environment.getExternalStorageDirectory().getAbsolutePath()+"/xiaoting/cache");
 		}
 
@@ -267,7 +267,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
 			super.onPreExecute();
 			ImageView imageView = (ImageView) listView.findViewWithTag(tag);
 			if (imageView != null) {
-				imageView.setImageResource(R.drawable.ic_launcher);
+				imageView.setImageResource(R.drawable.head2_img);
 			}
 		}
 
