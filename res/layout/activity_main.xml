@@ -24,8 +24,8 @@
                 android:layout_height="fill_parent" />
 
             <fragment
-                android:id="@+id/fragement_search"
-                android:name="com.example.activity.FragmentSearch"
+                android:id="@+id/fragement_addr"
+                android:name="com.example.activity.FragmentAddr"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" />
 
@@ -52,19 +52,24 @@
             style="@style/rg_btn_style"
             android:checked="true"
             android:drawableTop="@drawable/rb_one_btn_selector"
-            android:text="首页" />
+            android:text="球友" />
 
         <RadioButton
             android:id="@+id/rbTwo"
             style="@style/rg_btn_style"
             android:drawableTop="@drawable/rb_two_btn_selector"
-            android:text="搜索" />
-
+            android:text="场地" />
+        
         <RadioButton
             android:id="@+id/rbThree"
             style="@style/rg_btn_style"
             android:drawableTop="@drawable/rb_three_btn_selector"
-            android:text="设置" />
+            android:text="约球" />
+        
+        <RadioButton
+            android:id="@+id/rbFour"
+            style="@style/rg_btn_style"
+            android:drawableTop="@drawable/rb_three_btn_selector"
+            android:text="消息" />
     </RadioGroup>
-
 </LinearLayout>

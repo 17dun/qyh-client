@@ -4,11 +4,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <include
-        android:id="@+id/one_title"
-        layout="@layout/title_bar" />
-	      <com.handmark.pulltorefresh.library.PullToRefreshListView
-        android:id="@+id/listView"
+    <include layout="@layout/title_bar" />
+  
+	<com.handmark.pulltorefresh.library.PullToRefreshListView
+        android:id="@+id/addrlistView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:cacheColorHint="#00000000"

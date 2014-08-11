@@ -39,7 +39,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.model.Person;
+import com.example.activity.FragmentMain.FirstAdapter;
+import com.example.model.Addr;
 import com.example.provider.JSONProvider;
 
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
@@ -47,7 +48,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 
 
-public class FragmentMain extends Fragment implements OnClickListener {
+public class FragmentAddr extends Fragment implements OnClickListener {
 	private TextView tv;
 	static String server_ip = "192.168.1.103";
 	FirstAdapter adapter;
@@ -61,12 +62,9 @@ public class FragmentMain extends Fragment implements OnClickListener {
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == TIME_UP) {
-				Log.i("i","1");
-				// handler里面的方法是运行在主线程的
-				List<Person> data = getDataByJson(strjson);
-				adapter = new FirstAdapter(getActivity(), data);// Fragment
-																// 里没有getApplicationContext()
-																// 这个方法，一般在这里用getActivity()方法代理
+				List<Addr> data = getDataByJson(strjson);
+				Log.i("data",strjson);
+				adapter = new FirstAdapter(getActivity(), data);
 				ListView actualListView = listView.getRefreshableView();
 				
 				adapter.setListView(actualListView);
@@ -77,16 +75,15 @@ public class FragmentMain extends Fragment implements OnClickListener {
 							int arg2, long arg3) {
 						Intent intent = new Intent(getActivity(),UserInfoActivity.class);// 实例化一个调转页面     不是activity的话不能用这种方式  UserInfoActivity这个名字太有误导性了，一般是fragment的话就别起带activity的名字 那把名字改改
 						intent.putExtra("name", adapter.getItem(arg2).getName());// 传参
-						intent.putExtra("work", adapter.getItem(arg2).getWork());// 传参
-						intent.putExtra("far", adapter.getItem(arg2).getFar());// 传参
-						intent.putExtra("style", adapter.getItem(arg2).getStyle());// 传参
-						intent.putExtra("id", arg3);
+						intent.putExtra("addr", adapter.getItem(arg2).getAddr());// 传参
+						intent.putExtra("tel", adapter.getItem(arg2).getTel());// 传参
+						intent.putExtra("point", adapter.getItem(arg2).getPoint());// 传参
+						intent.putExtra("city", adapter.getItem(arg2).getCity());
 						startActivity(intent);// 跳转
-
 					}
 				});
 			} else if (msg.what == TIME_UP2) {
-				List<Person> data = getDataByJson(strjson);
+				List<Addr> data = getDataByJson(strjson);
 				adapter.addData(data);
 			}
 		}
@@ -94,28 +91,28 @@ public class FragmentMain extends Fragment implements OnClickListener {
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-		View rootView = inflater.inflate(R.layout.fragment_main, container,false);
-		listView = (PullToRefreshListView) rootView.findViewById(R.id.listView);
+		View rootView = inflater.inflate(R.layout.fragment_addr, container,false);
+		listView = (PullToRefreshListView) rootView.findViewById(R.id.addrlistView);
 		
-		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
-			@Override
-			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-				String label = "上次更新时间:"+lastRefreshDate;
-				lastRefreshDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()); 
-				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-				new GetDataTask().execute();
-			}
-		});
+//		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
+//			@Override
+//			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+//				String label = "上次更新时间:"+lastRefreshDate;
+//				lastRefreshDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()); 
+//				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
+//				new GetDataTask().execute();
+//			}
+//		});
 		
 		
 		
 		tv = (TextView) rootView.findViewById(R.id.titleTv);
-		tv.setText("找球友");
+		tv.setText("附近的场地");
 		new Thread(new Runnable() {// 刚才那个错的意思是在主线程发起了网络请求，android4.0之后对网络访问做了限制，默认情况下网络访问不能放在主线程里，不然会报错
 					@Override
 					public void run() {
 						try {
-							strjson = JSONProvider.getJSONData("http://"+server_ip+":888/?method=getUserList");
+							strjson = JSONProvider.getJSONData("http://"+server_ip+":888/?method=getPlaceList");
 							
 							/*
 							 * android手机就相当于一个小linux系统
@@ -137,10 +134,10 @@ public class FragmentMain extends Fragment implements OnClickListener {
 
 	static class FirstAdapter extends BaseAdapter {// 一般情况下，使用listview，gridview,gallery等，都学要自定义一个数据适配器，并继承BaseAdaper,有些直接从数据库取数据展示的，可能会用到SimpleCursorAdapter，不过一般用的少，继承BaseAdapter的比较多
 		private Context context;
-		private List<Person> dataList;
+		private List<Addr> dataList;
 		private ListView listView;
 
-		public FirstAdapter(Context context, List<Person> dataList) {
+		public FirstAdapter(Context context, List<Addr> dataList) {
 			this.context = context;
 			this.dataList = dataList;
 		}
@@ -155,7 +152,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
 		}
 
 		@Override
-		public Person getItem(int arg0) {// 这个方法返回特定位置的数据
+		public Addr getItem(int arg0) {// 这个方法返回特定位置的数据
 
 			return dataList.get(arg0);
 		}
@@ -166,25 +163,25 @@ public class FragmentMain extends Fragment implements OnClickListener {
 			return dataList.get(arg0).getId();
 		}
 
-		public void addData(Person tx) {
+		public void addData(Addr tx) {
 			dataList.add(tx);
 			notifyDataSetChanged();
 		}
 
-		public void addData(List<Person> datas) {
+		public void addData(List<Addr> datas) {
 			dataList.addAll(datas);
 			notifyDataSetChanged();
 		}
-		public void addFirst(Person tx) {
-			List<Person> temp = new ArrayList<Person>();
+		public void addFirst(Addr tx) {
+			List<Addr> temp = new ArrayList<Addr>();
 			temp.add(tx);
 			temp.addAll(dataList);
 			dataList.clear();
 			dataList.addAll(temp);
 			notifyDataSetChanged();
 		}
-		public void addHeadDate(List<Person> datas){
-			List<Person> temp = new ArrayList<Person>();
+		public void addHeadDate(List<Addr> datas){
+			List<Addr> temp = new ArrayList<Addr>();
 			temp.addAll(datas);
 			temp.addAll(dataList);
 			dataList.clear();
@@ -194,30 +191,26 @@ public class FragmentMain extends Fragment implements OnClickListener {
 
 		@Override
 		public View getView(int arg0, View arg1, ViewGroup arg2) {// 适配器的主要功能，在这里初始化数据
+			Log.i("---------","ssss");
 			if (arg1 == null) {
 				// arg1 = new TextView(context);
-				arg1 = View.inflate(context, R.layout.listitem, null);// 把一个xml文件解析成一个view对象，最后一个参数标示
+				arg1 = View.inflate(context, R.layout.addrlistitem, null);// 把一个xml文件解析成一个view对象，最后一个参数标示
 																		// 父类
 			}
-			TextView tv = (TextView) arg1.findViewById(R.id.tvName);
-			TextView far = (TextView) arg1.findViewById(R.id.far);
-			TextView work = (TextView) arg1.findViewById(R.id.tvWork);
-			TextView score = (TextView) arg1.findViewById(R.id.tvScore);
-			ImageView ivHeader = (ImageView) arg1.findViewById(R.id.ivHeader);
-			ImageView ivSex = (ImageView) arg1.findViewById(R.id.ivSex);
-			Person p = getItem(arg0);
-			tv.setText(p.getName());
-			far.setText(p.getFar());
-			work.setText(p.getWork());
-			score.setText(p.getScore());
-			if(p.getSex()==0){
-				ivSex.setBackgroundResource(R.drawable.girl);
-			}
+			TextView name = (TextView) arg1.findViewById(R.id.addrName);
+			TextView addr = (TextView) arg1.findViewById(R.id.addrPlace);
+			TextView tel = (TextView) arg1.findViewById(R.id.addrTel);
+			TextView point = (TextView) arg1.findViewById(R.id.addrPoint);
+			TextView city = (TextView) arg1.findViewById(R.id.addrCity);
+			Addr p = getItem(arg0);
 			
-			String url = "http://"+ server_ip +":8080/images/" + p.getPic();
-			Log.i("url",url);
-			ivHeader.setTag(arg1 + url);
-			new DownloadBitmapTask(listView, arg1 + url).execute(url);
+			
+			name.setText(p.getName());
+			addr.setText(p.getAddr());
+			tel.setText(p.getTel());
+			point.setText(p.getPoint());
+			city.setText(p.getCity());
+			
 			return arg1;
 		}
 
@@ -323,8 +316,8 @@ public class FragmentMain extends Fragment implements OnClickListener {
 					}).start();
 	}
 
-	private List<Person> getDataByJson(String json) {// 根据json字符串组装list
-		List<Person> persons = new ArrayList<Person>();
+	private List<Addr> getDataByJson(String json) {// 根据json字符串组装list
+		List<Addr> addrs = new ArrayList<Addr>();
 		JSONArray jsonArray;
 		try {
 			//取code，
@@ -333,43 +326,41 @@ public class FragmentMain extends Fragment implements OnClickListener {
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
 				long id = jsonObject.getLong("id");
 				String name = jsonObject.getString("name");
-				int age = jsonObject.getInt("age");
-				int sex = jsonObject.getInt("sex");
-				String pic = jsonObject.getString("pic");
-				int work = jsonObject.getInt("work");
-				String style = jsonObject.getString("style");
-				//String score = jsonObject.getString("score");
-				Person person = new Person(id, name, age,sex, pic,work,style);
-				persons.add(person);
+				String addr = jsonObject.getString("addr");
+				String tel = jsonObject.getString("tel");
+				String point = jsonObject.getString("point");
+				String city = jsonObject.getString("city");
+				Addr addrItem = new Addr(id, name, addr,tel, point,city);
+				addrs.add(addrItem);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		return persons;
+		return addrs;
 	}
 	
-	private class GetDataTask extends AsyncTask<Void, Void, List<Person>> {//本身在子线程里面运行
+	private class GetDataTask extends AsyncTask<Void, Void, List<Addr>> {//本身在子线程里面运行
 
 		//后台处理部分
 		@Override
-		protected List<Person> doInBackground(Void... params) {//你申明的参数类型是void，就是没参数，你想要啥样的参数·
+		protected List<Addr> doInBackground(Void... params) {//你申明的参数类型是void，就是没参数，你想要啥样的参数·
 			// Simulates a background job.
 			
 			try {
-				strjson = JSONProvider.getJSONData("http://"+server_ip+":888/?method=getUserList");
+				strjson = JSONProvider.getJSONData("http://"+server_ip+":888/?method=getPlaceList");
 				Log.i("strjson", strjson);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
-			List<Person> dataPerson = getDataByJson(strjson);
+			List<Addr> dataPerson = getDataByJson(strjson);
 			return dataPerson;
 		}
 
 		//这里是对刷新的响应，可以利用addFirst（）和addLast()函数将新加的内容加到LISTView中
 		//根据AsyncTask的原理，onPostExecute里的result的值就是doInBackground()的返回值
 		@Override
-		protected void onPostExecute(List<Person> result) {
+		protected void onPostExecute(List<Addr> result) {
 			//在头部增加新添内容
 			adapter.addHeadDate(result);
 			//通知程序数据集已经改变，如果不做通知，那么将不会刷新mListItems的集合

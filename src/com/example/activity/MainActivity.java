@@ -29,7 +29,7 @@ public class MainActivity extends FragmentActivity {
 		mFragments = new Fragment[3];
 		fragmentManager = getSupportFragmentManager();
 		mFragments[0] = fragmentManager.findFragmentById(R.id.fragement_main);
-		mFragments[1] = fragmentManager.findFragmentById(R.id.fragement_search);
+		mFragments[1] = fragmentManager.findFragmentById(R.id.fragement_addr);
 		mFragments[2] = fragmentManager
 				.findFragmentById(R.id.fragement_setting);
 		fragmentTransaction = fragmentManager.beginTransaction()

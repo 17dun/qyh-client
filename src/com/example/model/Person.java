@@ -38,7 +38,11 @@ public class Person {// 创建对象封装数据
 	}
 
 	public String getName() {
-		return name;
+		if(name.length()>7){
+			return name.substring(0,7);
+		}else{
+			return name;
+		}
 	}
 
 	public void setName(String name) {
