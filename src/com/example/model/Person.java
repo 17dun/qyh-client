@@ -1,7 +1,7 @@
 package com.example.model;
 
 public class Person {// 创建对象封装数据
-	private long id;
+	private int id;
 	private int age;
 	private int sex;
 	private String name;
@@ -12,7 +12,7 @@ public class Person {// 创建对象封装数据
 	//private String score;
 	
 
-	public Person(long id, String name, int age,int sex, String pic,int work,String style) {
+	public Person(int id, String name, int age,int sex, String pic,int work,String style) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -29,11 +29,11 @@ public class Person {// 创建对象封装数据
 	}
 
 
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

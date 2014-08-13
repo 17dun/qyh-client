@@ -5,8 +5,6 @@
     android:orientation="vertical" >
 
     <!-- 上边主页面 -->
-    
-
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
@@ -30,6 +28,16 @@
                 android:layout_height="fill_parent" />
 
             <fragment
+                android:id="@+id/fragement_add"
+                android:name="com.example.activity.FragmentAdd"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+            <fragment
+                android:id="@+id/fragement_message"
+                android:name="com.example.activity.FragmentMessage"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+            <fragment
                 android:id="@+id/fragement_setting"
                 android:name="com.example.activity.FragmentSetting"
                 android:layout_width="fill_parent"
@@ -39,15 +47,11 @@
 
     <!-- 底部菜单页面 -->
 
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/line" />
     <RadioGroup
         android:id="@+id/bottomRg"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.5"
+        android:layout_height="65dp"
+        android:background="@drawable/bottom_tab_bg"
         android:orientation="horizontal" >
 
         <RadioButton
@@ -56,37 +60,28 @@
             android:checked="true"
             android:drawableTop="@drawable/rb_one_btn_selector"
             android:text="球友" 
-        	android:textColor="#ff389cff"
-            android:layout_marginTop="5dp"
             />
-
         <RadioButton
             android:id="@+id/rbTwo"
             style="@style/rg_btn_style"
             android:drawableTop="@drawable/rb_two_btn_selector"
-        	android:textColor="#ff389cff"
-            android:text="场地" 
-            android:layout_marginTop="5dp"/>
+            android:text="场地" />
         
         <RadioButton
             android:id="@+id/rbThree"
             style="@style/rg_btn_style"
             android:drawableTop="@drawable/rb_three_btn_selector"
-        	/>
-        
+            android:text="约球"
+             />
         <RadioButton
             android:id="@+id/rbFour"
             style="@style/rg_btn_style"
             android:drawableTop="@drawable/rb_four_btn_selector"
-            android:text="消息" 
-        	android:textColor="#ff389cff"
-            android:layout_marginTop="5dp" />
+            android:text="消息" />
         <RadioButton
             android:id="@+id/rbFive"
             style="@style/rg_btn_style"
             android:drawableTop="@drawable/rb_five_btn_selector"
-            android:text="设置" 
-        	android:textColor="#ff389cff"
-            android:layout_marginTop="5dp" />
+            android:text="设置"  />
     </RadioGroup>
 </LinearLayout>

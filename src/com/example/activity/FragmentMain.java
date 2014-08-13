@@ -54,7 +54,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 
 public class FragmentMain extends Fragment implements OnClickListener {
 	private TextView tv;
-	static String server_ip = "192.168.7.212";
+	static String server_ip = "192.168.1.103";
 	FirstAdapter adapter;
 	PullToRefreshListView listView;
 	String strjson = "";
@@ -66,7 +66,6 @@ public class FragmentMain extends Fragment implements OnClickListener {
 	private Handler handler = new Handler() {
 		public void handleMessage(Message msg) {
 			if (msg.what == TIME_UP) {
-				Log.i("i","1");
 				// handler里面的方法是运行在主线程的
 				List<Person> data = getDataByJson(strjson);
 				DBUtils dbUtils = new DBUtils(getActivity());
@@ -99,12 +98,16 @@ public class FragmentMain extends Fragment implements OnClickListener {
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1,
 							int arg2, long arg3) {
+						String str=String.valueOf(arg3);
+						Log.i("str",str);
+						int id = Integer.parseInt(str);
+						Log.i("id",String.valueOf(id));
 						Intent intent = new Intent(getActivity(),UserInfoActivity.class);// 实例化一个调转页面     不是activity的话不能用这种方式  UserInfoActivity这个名字太有误导性了，一般是fragment的话就别起带activity的名字 那把名字改改
-						intent.putExtra("name", adapter.getItem(arg2).getName());// 传参
-						intent.putExtra("work", adapter.getItem(arg2).getWork());// 传参
-						intent.putExtra("far", adapter.getItem(arg2).getFar());// 传参
-						intent.putExtra("style", adapter.getItem(arg2).getStyle());// 传参
-						intent.putExtra("id", arg3);
+						intent.putExtra("name", adapter.getItem(id).getName());// 传参
+						intent.putExtra("work", adapter.getItem(id).getWork());// 传参
+						intent.putExtra("far", adapter.getItem(id).getFar());// 传参
+						intent.putExtra("style", adapter.getItem(id).getStyle());// 传参
+						intent.putExtra("id", id);
 						startActivity(intent);// 跳转
 
 					}
@@ -361,7 +364,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
 			jsonArray = new JSONArray(json);
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
-				long id = jsonObject.getLong("id");
+				int id = jsonObject.getInt("id");
 				String name = jsonObject.getString("name");
 				int age = jsonObject.getInt("age");
 				int sex = jsonObject.getInt("sex");
