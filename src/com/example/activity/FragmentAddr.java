@@ -94,19 +94,6 @@ public class FragmentAddr extends Fragment implements OnClickListener {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		View rootView = inflater.inflate(R.layout.fragment_addr, container,false);
 		listView = (PullToRefreshListView) rootView.findViewById(R.id.addrlistView);
-		
-//		listView.setOnRefreshListener(new OnRefreshListener<ListView>() {
-//			@Override
-//			public void onRefresh(PullToRefreshBase<ListView> refreshView) {
-//				String label = "上次更新时间:"+lastRefreshDate;
-//				lastRefreshDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new java.util.Date()); 
-//				refreshView.getLoadingLayoutProxy().setLastUpdatedLabel(label);
-//				new GetDataTask().execute();
-//			}
-//		});
-		
-		
-		
 		tv = (TextView) rootView.findViewById(R.id.titleTv);
 		tv.setText("附近的场地");
 		new Thread(new Runnable() {// 刚才那个错的意思是在主线程发起了网络请求，android4.0之后对网络访问做了限制，默认情况下网络访问不能放在主线程里，不然会报错
@@ -192,9 +179,7 @@ public class FragmentAddr extends Fragment implements OnClickListener {
 
 		@Override
 		public View getView(int arg0, View arg1, ViewGroup arg2) {// 适配器的主要功能，在这里初始化数据
-			Log.i("---------","ssss");
 			if (arg1 == null) {
-				// arg1 = new TextView(context);
 				arg1 = View.inflate(context, R.layout.addrlistitem, null);// 把一个xml文件解析成一个view对象，最后一个参数标示
 																		// 父类
 			}
@@ -285,16 +270,8 @@ public class FragmentAddr extends Fragment implements OnClickListener {
 		return bitmap;
 	}
 
-	// @Override
-	// public boolean onCreateOptionsMenu(Menu menu) {//这个一般不用，直接注释掉，
-	// // Inflate the menu; this adds items to the action bar if it is present.
-	// getMenuInflater().inflate(R.menu.main, menu);
-	// return true;
-	// }
-
 	@Override
-	public void onClick(View arg0) {
-		
+	public void onClick(View arg0) {		
 			new Thread(new Runnable() {// 刚才那个错的意思是在主线程发起了网络请求，android4.0之后对网络访问做了限制，默认情况下网络访问不能放在主线程里，不然会报错
 						@Override
 						public void run() {
@@ -358,18 +335,6 @@ public class FragmentAddr extends Fragment implements OnClickListener {
 			return dataPerson;
 		}
 
-		//这里是对刷新的响应，可以利用addFirst（）和addLast()函数将新加的内容加到LISTView中
-		//根据AsyncTask的原理，onPostExecute里的result的值就是doInBackground()的返回值
-		@Override
-		protected void onPostExecute(List<Addr> result) {
-			//在头部增加新添内容
-			adapter.addHeadDate(result);
-			//通知程序数据集已经改变，如果不做通知，那么将不会刷新mListItems的集合
-			adapter.notifyDataSetChanged();  
-			// Call onRefreshComplete when the list has been refreshed.
-			listView.onRefreshComplete(); 
-			super.onPostExecute(result);
-		}
 	}
 
 

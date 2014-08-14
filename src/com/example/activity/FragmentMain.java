@@ -7,7 +7,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -26,13 +25,9 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.text.format.DateUtils;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -52,7 +47,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 
 
-public class FragmentMain extends Fragment implements OnClickListener {
+public class FragmentMain extends Fragment{
 	private TextView tv;
 	static String server_ip = "192.168.1.103";
 	FirstAdapter adapter;
@@ -97,19 +92,15 @@ public class FragmentMain extends Fragment implements OnClickListener {
 				actualListView.setOnItemClickListener(new OnItemClickListener() {// 为listView的每个item创建点击事件
 					@Override
 					public void onItemClick(AdapterView<?> arg0, View arg1,
-							int arg2, long arg3) {
-						String str=String.valueOf(arg3);
-						Log.i("str",str);
-						int id = Integer.parseInt(str);
-						Log.i("id",String.valueOf(id));
+					int arg2, long arg3) {
+						int index = arg2-1;
 						Intent intent = new Intent(getActivity(),UserInfoActivity.class);// 实例化一个调转页面     不是activity的话不能用这种方式  UserInfoActivity这个名字太有误导性了，一般是fragment的话就别起带activity的名字 那把名字改改
-						intent.putExtra("name", adapter.getItem(id).getName());// 传参
-						intent.putExtra("work", adapter.getItem(id).getWork());// 传参
-						intent.putExtra("far", adapter.getItem(id).getFar());// 传参
-						intent.putExtra("style", adapter.getItem(id).getStyle());// 传参
-						intent.putExtra("id", id);
+						intent.putExtra("name", adapter.getItem(index).getName());// 传参
+						intent.putExtra("work", adapter.getItem(index).getWork());// 传参
+						intent.putExtra("far", adapter.getItem(index).getFar());// 传参
+						intent.putExtra("style", adapter.getItem(index).getStyle());// 传参
+						intent.putExtra("id", arg3);
 						startActivity(intent);// 跳转
-
 					}
 				});
 			} else if (msg.what == TIME_UP2) {
@@ -198,6 +189,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
 			return dataList.get(arg0).getId();
 		}
 
+		
 		public void addData(Person tx) {
 			dataList.add(tx);
 			notifyDataSetChanged();
@@ -324,37 +316,7 @@ public class FragmentMain extends Fragment implements OnClickListener {
 		return bitmap;
 	}
 
-	// @Override
-	// public boolean onCreateOptionsMenu(Menu menu) {//这个一般不用，直接注释掉，
-	// // Inflate the menu; this adds items to the action bar if it is present.
-	// getMenuInflater().inflate(R.menu.main, menu);
-	// return true;
-	// }
 
-	@Override
-	public void onClick(View arg0) {
-		
-			new Thread(new Runnable() {// 刚才那个错的意思是在主线程发起了网络请求，android4.0之后对网络访问做了限制，默认情况下网络访问不能放在主线程里，不然会报错
-						@Override
-						public void run() {
-							try {
-								strjson = JSONProvider
-										.getJSONData("http://"+server_ip+":888/?method=getUserList");
-								/*
-								 * android手机就相当于一个小linux系统
-								 * 写127.0.0.1，相当于请求到系统自己的地址了
-								 * ，但系统这个地址又不对外提供服务，就refused了
-								 */
-								Log.i("strjson", strjson);
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-							Message msg = new Message();
-							msg.what = TIME_UP2;
-							handler.sendMessage(msg);
-						}
-					}).start();
-	}
 
 	private List<Person> getDataByJson(String json) {// 根据json字符串组装list
 		List<Person> persons = new ArrayList<Person>();
