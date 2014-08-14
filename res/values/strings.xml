@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">xiaoting</string>
+    <string name="server">192.168.7.212</string>
     <string name="p2refresh_head_load_more">加载更多</string>
     <string name="p2refresh_end_load_more">更    多</string>
     <string name="p2refresh_end_click_load_more">点击加载</string>
