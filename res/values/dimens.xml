@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="updatebar_height">16.0dip</dimen>
     <dimen name="audio_space">16.0dip</dimen>
     <dimen name="audio_status">24.0dip</dimen>
     <dimen name="border_large_weight">1.0dip</dimen>
